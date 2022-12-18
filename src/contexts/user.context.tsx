@@ -1,31 +1,26 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
-
-import { doc, getDoc } from "firebase/firestore";
+import { createContext, useCallback, useContext, useState } from "react";
+import { useFirestoreDocument } from "@react-query-firebase/firestore";
+import { doc } from "firebase/firestore";
 import { db } from "../services/firebaseConfig";
-// import { useQuery } from "react-query/types/react";
+import { Props } from "../models/DefaultProps";
+import { User } from "../models/User";
+interface contextProps {
+  currentUser: User;
+}
 
-const UserContext = createContext<any>({});
+const UserContext = createContext<contextProps>({ currentUser: new User() });
 
-export const UserProvider = ({ children }: any) => {
-  const [currentUser, setCurrentUser] = useState();
-  const getCurrentUser = (userId: string = "YMCCgTKFIqcnerqOZ05f") => {
-    // const { isLoading, error, data } = useQuery("currentUser", () => {
-    //   const docRef = doc(db, "users", userId);
-    //   getDoc(docRef);
-    // });
-    // if (isLoading) {
-    //   return <span>Loading...</span>;
-    // }
-    // if (!!error) {
-    //   console.log("error", error);
-    //   // return <span>Error: {error?.message}</span>
-    // }
-    // return data;
-  };
+const userId = "YMCCgTKFIqcnerqOZ05f";
+
+export const UserProvider: React.FC<Props> = (props) => {
+  const userRef = doc(db, "users", userId);
+  const { data } = useFirestoreDocument(["users", userId], userRef); // TODO: implement isLoading
+  const { name, email, hour_value, hour_amount_per_day } = data?.data() as User;
+  const currentUser = new User(name, email, hour_value, hour_amount_per_day);
 
   return (
-    <UserContext.Provider value={{ getCurrentUser }}>
-      {children}
+    <UserContext.Provider value={{ currentUser }}>
+      {props.children}
     </UserContext.Provider>
   );
 };

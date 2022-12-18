@@ -1,9 +1,8 @@
 import { useUser } from "../../contexts/user.context";
 
 const Dashboard: React.FC = (props) => {
-  const { getCurrentUser } = useUser();
-  getCurrentUser();
-  return <div>Dashboard</div>;
+  const { currentUser } = useUser();
+  return <p>Olá {currentUser.name}</p>;
 };
 
 export default Dashboard;

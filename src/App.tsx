@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+const queryClient = new QueryClient();
 
-function App() {
-  return <div className="App"></div>;
-}
+import Dashboard from "./pages/Dashboard";
+
+const App: React.FC = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Dashboard></Dashboard>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

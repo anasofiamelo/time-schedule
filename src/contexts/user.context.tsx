@@ -15,9 +15,11 @@ const userId = "YMCCgTKFIqcnerqOZ05f";
 export const UserProvider: React.FC<Props> = (props) => {
   const userRef = doc(db, "users", userId);
   const { data } = useFirestoreDocument(["users", userId], userRef); // TODO: implement isLoading
-  const { name, email, hour_value, hour_amount_per_day } = data?.data() as User;
-  const currentUser = new User(name, email, hour_value, hour_amount_per_day);
-
+  // console.log("data", data);
+  // const { name, email, hour_value, hour_amount_per_day } = data?.data() as User;
+  // const currentUser = new User(name, email, hour_value, hour_amount_per_day);
+  const currentUser = new User();
+  // console.log("currentUser", currentUser);
   return (
     <UserContext.Provider value={{ currentUser }}>
       {props.children}
